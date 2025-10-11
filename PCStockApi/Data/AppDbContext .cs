@@ -47,19 +47,15 @@ namespace PCStockApi.Data
             // Clave primaria de Board
             modelBuilder.Entity<Board>()
                 .HasKey(b => b.BoardId);
-
             // Clave primaria de Chasis
             modelBuilder.Entity<Chasi>()
                 .HasKey(c => c.ChasisId);
-
             // Clave primaria de DetallePedido
             modelBuilder.Entity<DetallePedido>()
                 .HasKey(de => de.DetalleId);
-
             // Clave primaria de Direccion
             modelBuilder.Entity<Direccion>()
                 .HasKey(d => d.DireccionId);
-
             // Clave primaria de Disco
             modelBuilder.Entity<Disco>()
                 .HasKey(di => di.DiscoId);
@@ -157,15 +153,7 @@ namespace PCStockApi.Data
                 .HasOne(pc => pc.ProductoCompatibleCon) // Relación con producto compatible
                 .WithMany(p => p.ProductoCompatibleProductoCompatibleCons) // Lista en Producto
                 .HasForeignKey(pc => pc.ProductoCompatibleConId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            
-
-            
-
-            
-
-            
+                .OnDelete(DeleteBehavior.Restrict);             
         }
     }
 }
