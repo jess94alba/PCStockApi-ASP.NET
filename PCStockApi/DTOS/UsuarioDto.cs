@@ -8,24 +8,24 @@
 
         public string Correo { get; set; } = string.Empty;
 
-        // Contraseña en texto plano al registrarse (se encripta antes de guardar)
+        // Contraseña en texto plano (solo para registrar o iniciar sesión)
         public string Password { get; set; } = string.Empty;
 
-        // NIT solo aplica para proveedor y vendedor
+        // Solo aplica para proveedores o vendedores
         public string? NitEmpresa { get; set; }
 
         public string? Telefono { get; set; }
 
-        // Rol: "Cliente", "Proveedor", "Vendedor" o "Administrador"
+        // Rol general: "Cliente", "Proveedor", "Vendedor", "Administrador"
         public string Rol { get; set; } = string.Empty;
 
-        // Token otorgado por el administrador (solo para proveedor o vendedor)
+        // Token de invitación generado por el administrador
         public string? Token { get; set; }
 
-        // Fecha de registro (opcional, lo puedes asignar desde el backend)
+        // Fecha de registro opcional (solo para mostrar)
         public DateTime? FechaRegistro { get; set; }
 
-        // En respuesta, el backend puede devolver roles asignados
+        // Roles asignados en la respuesta del backend
         public List<string>? RolesAsignados { get; set; }
     }
 }

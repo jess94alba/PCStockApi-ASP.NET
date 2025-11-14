@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PCStockApi.Data;
 using PCStockApi.Models;
+using PCStockApi.Repositories.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PCStockApi.Repositories
 {
@@ -13,9 +17,17 @@ namespace PCStockApi.Repositories
             _context = context;
         }
 
+        public async Task<Usuario> GetByEmailAsync(string email)
+        {
+            return await _context.Usuarios
+                .Include(u => u.UsuarioRoles)
+                .ThenInclude(ur => ur.Role)
+                .FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task AddAsync(Usuario usuario)
         {
-            await _context.Usuarios.AddAsync(usuario);
+            _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
         }
 
@@ -27,14 +39,15 @@ namespace PCStockApi.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Usuario?> GetByEmailAsync(string email)
+        public async Task AddUsuarioRoleAsync(long usuarioId, long roleId)
         {
-            return await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Email == email);
-        }
+            var usuarioRole = new UsuarioRole
+            {
+                UsuarioId = usuarioId,
+                RoleId = roleId
+            };
 
-        public async Task SaveChangesAsync()
-        {
+            _context.UsuarioRoles.Add(usuarioRole);
             await _context.SaveChangesAsync();
         }
     }

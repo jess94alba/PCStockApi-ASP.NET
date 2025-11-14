@@ -2,19 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PCStockApi.Services
+namespace PCStockApi.Services.Interfaces
 {
     public interface IUsuarioService
     {
-        /// <summary>
-        /// Registra un nuevo usuario aplicando las reglas de negocio.
-        /// </summary>
         Task<UsuarioDto> RegistrarUsuarioAsync(UsuarioDto dto);
-
-        /// <summary>
-        /// Obtiene todos los usuarios registrados.
-        /// </summary>
         Task<IEnumerable<UsuarioDto>> GetAllUsuariosAsync();
+        Task<string> LoginAsync(string correo, string password);
     }
 }
-

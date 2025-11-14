@@ -1,7 +1,7 @@
 ﻿using PCStockApi.Models;
 using System.Threading.Tasks;
 
-namespace PCStockApi.Repositories
+namespace PCStockApi.Repositories.Interfaces
 {
     public interface IRoleRepository
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PCStockApi.Data;
 using PCStockApi.Models;
+using PCStockApi.Repositories.Interfaces;
 using System.Threading.Tasks;
 
 namespace PCStockApi.Repositories
@@ -14,10 +15,10 @@ namespace PCStockApi.Repositories
             _context = context;
         }
 
-        public async Task<RoleName?> GetByNameAsync(string roleName)
+        public async Task<RoleName?> GetByNameAsync(string nombreRol)
         {
             return await _context.RoleNames
-                .FirstOrDefaultAsync(r => r.Nombre.ToLower() == roleName.ToLower());
+                .FirstOrDefaultAsync(r => r.Nombre.ToLower() == nombreRol.ToLower());
         }
     }
 }

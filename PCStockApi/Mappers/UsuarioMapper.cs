@@ -14,12 +14,12 @@ namespace PCStockApi.Mappers
                 UsuarioId = dto.Id,
                 Nombre = dto.Nombre,
                 Email = dto.Correo,
-                PasswordHash = dto.Password, // En el servicio se encripta
+                PasswordHash = dto.Password,
                 NitEmpresa = dto.NitEmpresa,
                 Telefono = dto.Telefono,
                 FechaRegistro = dto.FechaRegistro ?? DateTime.Now,
                 EsAdmin = dto.Rol.Equals("Administrador", StringComparison.OrdinalIgnoreCase),
-                TokenUsado = null // Se maneja desde TokenRepository
+                TokenUsado = null
             };
         }
 
@@ -34,10 +34,9 @@ namespace PCStockApi.Mappers
                 Telefono = usuario.Telefono,
                 FechaRegistro = usuario.FechaRegistro,
                 Rol = usuario.EsAdmin ? "Administrador" :
-                      usuario.UsuarioRoles.FirstOrDefault()?.Role.Nombre ?? "Cliente",
+                      usuario.UsuarioRoles.FirstOrDefault()?.Role?.Nombre ?? "Cliente",
                 RolesAsignados = usuario.UsuarioRoles.Select(r => r.Role.Nombre).ToList()
             };
         }
     }
 }
-

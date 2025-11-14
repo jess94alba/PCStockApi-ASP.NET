@@ -44,6 +44,9 @@ namespace PCStockApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Usuario>().ToTable("Usuario");
+            modelBuilder.Entity<RoleName>().ToTable("RoleName");
+            modelBuilder.Entity<UsuarioRole>().ToTable("UsuarioRole");
             // Clave primaria de Board
             modelBuilder.Entity<Board>()
                 .HasKey(b => b.BoardId);
@@ -153,7 +156,51 @@ namespace PCStockApi.Data
                 .HasOne(pc => pc.ProductoCompatibleCon) // Relación con producto compatible
                 .WithMany(p => p.ProductoCompatibleProductoCompatibleCons) // Lista en Producto
                 .HasForeignKey(pc => pc.ProductoCompatibleConId)
-                .OnDelete(DeleteBehavior.Restrict);             
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación UsuarioRole → Usuario
+            modelBuilder.Entity<UsuarioRole>()
+                .HasOne(ur => ur.Usuario)
+                .WithMany(u => u.UsuarioRoles)
+                .HasForeignKey(ur => ur.UsuarioId);
+
+            // Relación UsuarioRole → RoleName
+            modelBuilder.Entity<UsuarioRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(r => r.UsuarioRoles)
+                .HasForeignKey(ur => ur.RoleId);
+
+            // ✅ Relación token-usuario
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.TokenUsado)
+                .WithMany(t => t.Usuarios)
+                .HasForeignKey(u => u.TokenUsadoId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // ✅ Semilla del Administrador prediseñado
+            modelBuilder.Entity<RoleName>().HasData(
+                new RoleName { RoleId = 1, Nombre = "Administrador" },
+                new RoleName { RoleId = 2, Nombre = "Proveedor" },
+                new RoleName { RoleId = 3, Nombre = "Vendedor" },
+                new RoleName { RoleId = 4, Nombre = "Cliente" }
+            );
+
+            modelBuilder.Entity<Usuario>().HasData(new Usuario
+            {
+                UsuarioId = 1,
+                Nombre = "Administrador del Sistema",
+                Email = "admin@pcstock.com",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123*"),
+                EsAdmin = true,
+                FechaRegistro = DateTime.Now
+            });
+
+            modelBuilder.Entity<UsuarioRole>().HasData(new UsuarioRole
+            {
+                UsuarioRoleId = 1,
+                UsuarioId = 1,
+                RoleId = 1
+            });
         }
     }
 }
